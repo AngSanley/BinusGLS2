@@ -13,14 +13,52 @@
 
 package com.angsanley.binusgls2;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.angsanley.binusgls2.fragments.ui.allpictures.AllPicturesFragment;
+import com.angsanley.binusgls2.fragments.ui.picturesfolder.PicturesFolderFragment;
+
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bottomNavigationView = findViewById(R.id.navigation_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        loadFragment(new AllPicturesFragment());
+    }
+
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_placeholder, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Fragment fragment = null;
+        switch (menuItem.getItemId()){
+            case R.id.nav_images:
+                fragment = new AllPicturesFragment();
+                break;
+            case R.id.nav_folders:
+                fragment = new PicturesFolderFragment();
+                break;
+        }
+        return loadFragment(fragment);
     }
 }
