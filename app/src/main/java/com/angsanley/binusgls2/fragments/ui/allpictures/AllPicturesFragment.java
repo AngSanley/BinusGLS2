@@ -17,13 +17,21 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.angsanley.binusgls2.R;
+import com.angsanley.binusgls2.adapters.AllPicturesRecyclerViewAdapter;
 
-public class AllPicturesFragment extends Fragment {
+import java.util.ArrayList;
+
+public class AllPicturesFragment extends Fragment implements AllPicturesRecyclerViewAdapter.ItemClickListener {
+
+    AllPicturesRecyclerViewAdapter adapter;
 
     public static AllPicturesFragment newInstance() {
         return new AllPicturesFragment();
@@ -39,6 +47,25 @@ public class AllPicturesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // data to populate the RecyclerView with
+        ArrayList<String> animalNames = new ArrayList<>();
+        animalNames.add("Horse");
+        animalNames.add("Cow");
+        animalNames.add("Camel");
+        animalNames.add("Sheep");
+        animalNames.add("Goat");
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = getView().findViewById(R.id.rview_allpics);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new AllPicturesRecyclerViewAdapter(getContext(), animalNames);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(getContext(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+    }
 }
