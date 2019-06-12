@@ -26,7 +26,6 @@
             android:id="@+id/toolbar_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Button"
             app:title="@string/app_name"/>
     </com.google.android.material.appbar.AppBarLayout>
 
