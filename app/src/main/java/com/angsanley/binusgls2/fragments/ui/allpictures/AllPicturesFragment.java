@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,7 +58,6 @@ public class AllPicturesFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Handler mHandler;
     private RelativeLayout mContent;
-    private ProgressBar mProgressBar;
     private String TAG = getTag();
 
     public class BackgroundLoad implements Runnable {
@@ -74,7 +74,7 @@ public class AllPicturesFragment extends Fragment {
                     @Override
                     public void run() {
                         mContent.setVisibility(View.GONE);
-                        mProgressBar.setVisibility(View.VISIBLE);
+                        mSwipeRefreshLayout.setRefreshing(true);
                     }
                 });
             }
@@ -88,7 +88,7 @@ public class AllPicturesFragment extends Fragment {
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
                         mContent.setVisibility(View.VISIBLE);
-                        mProgressBar.setVisibility(View.GONE);
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }
             });
@@ -167,10 +167,10 @@ public class AllPicturesFragment extends Fragment {
         mHandler = new Handler();
 
         mContent = view.findViewById(R.id.contents);
-        mProgressBar = view.findViewById(R.id.progress_bar);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        ViewCompat.setNestedScrollingEnabled(mRecyclerView, false);
 
         mErrorTextView = view.findViewById(R.id.error_text_view);
         new Thread(new BackgroundLoad(false)).start();
